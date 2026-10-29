@@ -10,13 +10,17 @@ public class Client {
             IO.println("Connected to Serwer");
 
             DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-            String messege = "abc";
+            String messege = IO.readln("Enter messege: ");
             output.writeUTF(messege);
 
             output.flush();
+
+
+            //Input
+            DataInputStream input = new DataInputStream(socket.getInputStream());
+            IO.println("Recived: " + input.readUTF());
+
             output.close();
-
-
 
 
 

@@ -18,9 +18,11 @@ public class Server {
                 IO.println("Received: " + message);
 
                 //Sending back
-                //DataOutputStream output = new DataOutputStream(socket.getOutputStream();
-                //output.writeUTF("Recived");
-                //output.flush();
+                DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+                output.writeUTF("Recived");
+                output.flush();
+
+
 
             }
 
