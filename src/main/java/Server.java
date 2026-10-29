@@ -1,34 +1,63 @@
-import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server  {
 
     void main(){
 
         try(ServerSocket server = new ServerSocket(8080)) {
             IO.println("Server running on 8080");
 
-            try(Socket socket = server.accept()) {
+            while(true) {
+                Socket socket = server.accept();
+                IO.println("New client connected");
+
                 DataInputStream input = new DataInputStream(socket.getInputStream());
-                String message = input.readUTF();
-                IO.println("Received: " + message);
-
-                //Sending back
                 DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-                output.writeUTF("Recived");
-                output.flush();
+
+                //Assigning new thread to a client
+                Thread thread = new ClientHandler(socket, input, output);
+                thread.start();
+
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
 
 
 
+//Creates new thread for each new connection
+class ClientHandler extends Thread {
+    Socket socket;
+    DataInputStream input;
+    DataOutputStream output;
+
+    ClientHandler(Socket socket, DataInputStream input, DataOutputStream output){
+        this.socket = socket;
+        this.input = input;
+        this.output = output;
+    }
+
+    @Override
+    public void run(){
+        try {
+            output.writeUTF("Connected to the server");
+            output.writeUTF("Type EXIT to exit");
+
+            String recived = input.readUTF();
+
+            switch (recived) {
+                case "EXIT" -> this.socket.close();
+                default -> IO.println("Recived new message: " + recived);
             }
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 }
