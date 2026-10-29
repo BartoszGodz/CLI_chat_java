@@ -4,7 +4,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-
     void main() {
 
         try (ServerSocket server = new ServerSocket(8080)) {
@@ -13,6 +12,9 @@ public class Server {
             while (true) {
                 Socket socket = server.accept();
                 IO.println("New client connected");
+
+                //Adding user to userSet
+                UserSet.userSet.add(socket);
 
                 DataInputStream input = new DataInputStream(socket.getInputStream());
                 DataOutputStream output = new DataOutputStream(socket.getOutputStream());
@@ -55,6 +57,8 @@ class ClientHandler extends Thread {
                 }
 
                 IO.println("Received new message from: " + username + "| " + received);
+
+                IO.println("USERS" + UserSet.userSet);
             }
 
         } catch (Exception e) {
