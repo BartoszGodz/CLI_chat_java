@@ -58,7 +58,8 @@ class ClientHandler extends Thread {
 
                 IO.println("Received new message from: " + username + "| " + received);
 
-                IO.println("USERS" + UserSet.userSet);
+                //TODO: Sending new message to users
+
             }
 
         } catch (Exception e) {
