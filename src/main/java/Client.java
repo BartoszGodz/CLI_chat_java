@@ -1,29 +1,25 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
-import java.util.Arrays;
 
 public class Client {
-
     void main() {
-        try (Socket socket = new Socket("localhost", 8080)){
-            IO.println("Connected to Serwer");
 
+        String name = IO.readln("Enter username: ");
+
+        try (Socket socket = new Socket("localhost", 8080)) {
             DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-            String messege = IO.readln("Enter messege: ");
-            output.writeUTF(messege);
-
-            output.flush();
-
-
-            //Input
             DataInputStream input = new DataInputStream(socket.getInputStream());
-            IO.println("Recived: " + input.readUTF());
+            //Reading welcome message
+            IO.println(input.readUTF());
+            //Sending username to the server
+            output.writeUTF(name);
 
-            output.close();
-
-
-
+            //Sending message loop
+            while (true) {
+                String messege = IO.readln("Enter messege: ");
+                output.writeUTF(messege);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

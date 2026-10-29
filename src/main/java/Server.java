@@ -20,7 +20,6 @@ public class Server  {
                 //Assigning new thread to a client
                 Thread thread = new ClientHandler(socket, input, output);
                 thread.start();
-
             }
         }
         catch (Exception e) {
@@ -46,14 +45,18 @@ class ClientHandler extends Thread {
     @Override
     public void run(){
         try {
-            output.writeUTF("Connected to the server");
-            output.writeUTF("Type EXIT to exit");
+            output.writeUTF("Connected to the server, Type EXIT to close connection");
+            String username = input.readUTF();
+            while (true) {
+                String received = input.readUTF();
 
-            String recived = input.readUTF();
+                if (received.equals("EXIT")) {
+                    socket.close();
+                    IO.println("Client " + username + " log out");
+                    break;
+                }
 
-            switch (recived) {
-                case "EXIT" -> this.socket.close();
-                default -> IO.println("Recived new message: " + recived);
+                IO.println("Received new message from: " + username + "| " + received);
             }
 
         } catch (Exception e) {
