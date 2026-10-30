@@ -32,16 +32,15 @@ public class Client {
         }
     }
 
-    private String getUsername(){
+    private String getUsername() {
         String userName = IO.readln("Enter username (max 10 characters): ");
-        if(userName.length() > 10){
-            userName = userName.substring(0,11);
-        }
-        else {
+        if (userName.length() > 10) {
+            userName = userName.substring(0, 11);
+        } else {
             String missingSpace = " ".repeat(10 - userName.length());
             userName = userName + missingSpace;
         }
-        return  userName;
+        return userName;
     }
 
 }
