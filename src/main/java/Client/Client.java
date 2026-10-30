@@ -24,60 +24,12 @@ public class Client {
             listener.start();
             sender.start();
 
-            sender.join();     //If message sender terminates, connection lost
+            sender.join();     //If message sender terminates, connection will end
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException(e);
-        }
-    }
-}
-
-class MessageSender extends Thread {
-    private final DataOutputStream output;
-
-    MessageSender(DataOutputStream output) {
-        this.output = output;
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            String userInput = IO.readln("~ ");
-
-            try {
-                output.writeUTF(userInput);
-            } catch (IOException e) {
-                IO.println("Unable to send message: " + e);
-                return;
-            }
-
-            if ("EXIT".equals(userInput)) {
-                return;
-            }
-        }
-    }
-}
-
-
-class MessageListener extends Thread {
-    private final DataInputStream input;
-
-    MessageListener(DataInputStream input) {
-        this.input = input;
-    }
-
-    @Override
-    public void run() {
-        try {
-            while (true) {
-                IO.println(input.readUTF());
-            }
-        } catch (EOFException e) {
-            IO.println("Disconnected from the server");
-        } catch (IOException e) {
-            IO.println("Error receiving messages: " + e.getMessage());
         }
     }
 }
