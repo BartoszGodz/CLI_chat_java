@@ -8,12 +8,10 @@ import java.net.SocketException;
 
 //Creates new thread for each new connection
 class ClientHandler extends Thread {
-    Socket socket;
     DataInputStream input;
     DataOutputStream output;
 
     ClientHandler(Socket socket, DataInputStream input, DataOutputStream output) {
-        this.socket = socket;
         this.input = input;
         this.output = output;
     }
@@ -21,7 +19,7 @@ class ClientHandler extends Thread {
     @Override
     public void run() {
         String username = null;
-        try (Socket clientSocket = socket) {
+        try{
             output.writeUTF("Connected to the server, Type EXIT to close connection");
 
             username = input.readUTF();
