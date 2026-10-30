@@ -13,7 +13,7 @@ class MessageSender extends Thread {
     @Override
     public void run() {
         while (true) {
-            String userInput = IO.readln("~ ");
+            String userInput = IO.readln();
 
             try {
                 output.writeUTF(userInput);

@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 
 //Creates new thread for each new connection
 class ClientHandler extends Thread {
@@ -23,8 +24,9 @@ class ClientHandler extends Thread {
         String username = null;
         try (Socket clientSocket = socket) {
             output.writeUTF("Connected to the server, Type EXIT to close connection");
-            //TODO: name format
+
             username = input.readUTF();
+
             while (true) {
                 String received = input.readUTF();
 
@@ -48,7 +50,7 @@ class ClientHandler extends Thread {
 
             }
 
-        } catch (EOFException e) {
+        } catch (SocketException e) {
             IO.println("Client " + (username == null ? "without a username" : username) + " disconnected");
         } catch (IOException e) {
             throw new RuntimeException("Error communicating with client", e);

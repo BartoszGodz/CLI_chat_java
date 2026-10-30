@@ -2,14 +2,13 @@ package Client;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
 public class Client {
     void main() {
 
-        String name = IO.readln("Enter username: ");
+        String name = this.getUsername();
 
         try (Socket socket = new Socket("localhost", 8080)) {
             DataOutputStream output = new DataOutputStream(socket.getOutputStream());
@@ -32,4 +31,17 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
+
+    private String getUsername(){
+        String userName = IO.readln("Enter username (max 10 characters): ");
+        if(userName.length() > 10){
+            userName = userName.substring(0,11);
+        }
+        else {
+            String missingSpace = " ".repeat(10 - userName.length());
+            userName = userName + missingSpace;
+        }
+        return  userName;
+    }
+
 }
