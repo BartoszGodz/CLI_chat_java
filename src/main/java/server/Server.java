@@ -15,11 +15,11 @@ public class Server {
                 Socket socket = server.accept();
                 IO.println("New client connected");
 
-                //Adding user to userSet
-                UserSet.userSet.add(socket);
-
                 DataInputStream input = new DataInputStream(socket.getInputStream());
                 DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+
+                //Adding user output stream to userSet
+                UserOutputSet.userSet.add(output);
 
                 //Assigning new thread to a client
                 Thread thread = new ClientHandler(socket, input, output);
